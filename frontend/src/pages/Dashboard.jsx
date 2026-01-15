@@ -20,7 +20,7 @@ const Dashboard = () => {
 
   const fetchAccounts = async () => {
     try {
-      const res = await axios.get("http://localhost:5001/api/account/fetch", 
+      const res = await axios.get("/api/account/fetch", 
         {
           headers: {Authorization: `Bearer ${token}`}
         }
@@ -41,7 +41,7 @@ const Dashboard = () => {
     e.preventDefault();
 
     try {
-      await axios.post("http://localhost:5001/api/account/create", form,
+      await axios.post("/api/account/create", form,
         {
           headers: {Authorization: `Bearer ${token}`}
         }
@@ -71,7 +71,7 @@ const Dashboard = () => {
 
     try {
       await axios.put(
-        `http://localhost:5001/api/transaction/account/${editAccount._id}`,
+        `/api/transaction/account/${editAccount._id}`,
         {
           accountName: editAccount.accountName,
           monthlySavingGoal: editAccount.monthlySavingGoal,
@@ -95,7 +95,7 @@ const Dashboard = () => {
     if(!window.confirm("Delete this account permanently?")) return;
     try {
       await axios.delete(
-        `http://localhost:5001/api/account/${id}`,
+        `/api/account/${id}`,
         {
           headers: {Authorization: `Bearer ${token}`}
         }

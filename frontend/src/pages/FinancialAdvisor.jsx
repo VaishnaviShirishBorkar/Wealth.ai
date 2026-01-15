@@ -20,7 +20,7 @@ const FinancialAdvisor = () => {
   const fetchChat = async () => {
   try {
     const res = await axios.get(
-      `http://localhost:5001/api/account/${accountId}/advisor/chat`,
+      `/api/account/${accountId}/advisor/chat`,
       {
         headers: {
           Authorization: `Bearer ${token}`
@@ -80,7 +80,7 @@ const sendMessage = async (text) => {
 
   try {
     const res = await axios.post(
-      `http://localhost:5001/api/account/${accountId}/advisor/chat`,
+      `/api/account/${accountId}/advisor/chat`,
       {
         messages: [
           ...messages,

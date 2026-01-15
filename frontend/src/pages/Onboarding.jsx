@@ -34,7 +34,7 @@ export default function Onboarding(){
 
   const handleSubmit = async (e) => {
     try {
-      await axios.post("http://localhost:5001/api/onboarding/save", 
+      await axios.post("/api/onboarding/save", 
         {data},
         {
           headers: {Authorization: `Bearer ${localStorage.getItem("token")}`}

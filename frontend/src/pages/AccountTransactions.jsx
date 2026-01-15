@@ -19,7 +19,7 @@ const AccountTransactions = () => {
 
   const fetchTransactions = async () => {
     const res = await axios.get(
-      `http://localhost:5001/api/transaction/account/${accountId}`,
+      `/api/transaction/account/${accountId}`,
       {
         headers: { Authorization: `Bearer ${token}` }
       }
@@ -35,7 +35,7 @@ const AccountTransactions = () => {
 
   const fetchAccount = async () => {
   const res = await axios.get(
-    `http://localhost:5001/api/account/${accountId}`,
+    `/api/account/${accountId}`,
     {
       headers: { Authorization: `Bearer ${token}` }
     }
@@ -66,7 +66,7 @@ useEffect(() => {
 
   try {
     await axios.delete(
-      `http://localhost:5001/api/transaction/${txId}/delete`,
+      `/api/transaction/${txId}/delete`,
       {
         headers: {
           Authorization: `Bearer ${token}`

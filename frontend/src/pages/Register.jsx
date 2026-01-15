@@ -27,7 +27,7 @@
       setLoading(true);
 
       try {
-        const res = await axios.post("http://localhost:5001/api/auth/register", form);
+        const res = await axios.post("/api/auth/register", form);
         // localStorage.setItem("token", res.data.token);
         console.log(res.data.msg);
         navigate("/login");

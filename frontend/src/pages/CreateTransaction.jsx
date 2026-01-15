@@ -29,7 +29,7 @@ const CreateTransaction = () => {
     const fetchTransaction = async () => {
       try {
         const res = await axios.get(
-          `http://localhost:5001/api/transaction/${transactionId}`,
+          `/api/transaction/${transactionId}`,
           {
             headers: { Authorization: `Bearer ${token}` }
           }
@@ -68,7 +68,7 @@ const CreateTransaction = () => {
 
     try {
       const res = await axios.post(
-        "http://localhost:5001/api/transaction/extract",
+        "/api/transaction/extract",
         data,
         {
           headers: {
@@ -134,7 +134,7 @@ const CreateTransaction = () => {
     if (isEdit) {
       // UPDATE
       await axios.put(
-        `http://localhost:5001/api/transaction/${transactionId}/edit`,
+        `/api/transaction/${transactionId}/edit`,
         {
           ...form,
           accountId
@@ -146,7 +146,7 @@ const CreateTransaction = () => {
     } else {
       // CREATE (manual OR extracted – both work)
       await axios.post(
-        "http://localhost:5001/api/transaction/create",
+        "/api/transaction/create",
         {
           ...form,
           accountId
@@ -172,7 +172,7 @@ const CreateTransaction = () => {
 
     try {
       await axios.delete(
-        `http://localhost:5001/api/transaction/${transactionId}/delete`,
+        `/api/transaction/${transactionId}/delete`,
         {
           headers: { Authorization: `Bearer ${token}` }
         }
