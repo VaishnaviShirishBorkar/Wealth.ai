@@ -37,30 +37,36 @@ const Dashboard = () => {
     fetchAccounts();
   }, []);
 
-  const createAccount = async(e) => {
-    e.preventDefault();
 
-    try {
-      await axios.post("/api/account/create", form,
-        {
-          headers: {Authorization: `Bearer ${token}`}
-        }
-      );
+  const createAccount = async (e) => {
+  e.preventDefault();
 
-      setForm({
-        accountName: "",
-        accountType: "",
-        startingBalance: "",
-        monthlySavingGoal: "",
-        isDefault: false
-      });
+  try {
+    const res = await axios.post(
+      "/api/account/create",
+      form,
+      {
+        headers: { Authorization: `Bearer ${token}` }
+      }
+    );
 
-      setShowModal(false);
-      fetchAccounts();
-    } catch (error) {
-       console.error("Create account error", error);
-    }
+    // ✅ INSTANT UI UPDATE
+    setAccounts(prev => [...prev, res.data]);
+
+    setForm({
+      accountName: "",
+      accountType: "",
+      startingBalance: "",
+      monthlySavingGoal: "",
+      isDefault: false
+    });
+
+    setShowModal(false);
+
+  } catch (error) {
+    console.error("Create account error", error);
   }
+};
 
   const openEdit = (acc) => {
     setEditAccount(acc);
@@ -71,7 +77,7 @@ const Dashboard = () => {
 
     try {
       await axios.put(
-        `/api/transaction/account/${editAccount._id}`,
+        `/api/account/${editAccount._id}`,
         {
           accountName: editAccount.accountName,
           monthlySavingGoal: editAccount.monthlySavingGoal,
@@ -308,11 +314,13 @@ const Dashboard = () => {
               </label>
 
               <button 
+                type='submit'
                 className='w-full px-2 rounded-lg bg-blue-500 hover:bg-blue-700 text-white py-2'>
                 Create Account
               </button>
 
               <button 
+                type='button'
                 onClick={() => setShowModal(false)}
                 className='w-full bg-gray-300 hover:bg-gray-400 py-2 rounded-lg'>
                 Cancel

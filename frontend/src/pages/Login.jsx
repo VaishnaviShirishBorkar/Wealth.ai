@@ -33,7 +33,15 @@ const Login = () => {
 
       localStorage.setItem("token", res.data.token);
 
-      navigate("/onboarding");
+      const { hasCompletedOnboarding } = res.data.user;
+      console.log("hasCompletedOnboarding =", hasCompletedOnboarding);
+      
+
+      if (hasCompletedOnboarding) {
+        navigate("/dashboard");
+      } else {
+        navigate("/onboarding");
+      }
 
     } catch (err) {
       setError(err.response?.data?.msg || "Login failed");

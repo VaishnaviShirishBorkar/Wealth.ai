@@ -31,7 +31,8 @@ const transactionSchema = new mongoose.Schema({
       "Medical",
       "Salary",
       "Misc",
-      "Work"
+      "Work",
+      "Initial"
     ]
   },
 

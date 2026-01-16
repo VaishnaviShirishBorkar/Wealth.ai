@@ -53,6 +53,11 @@ export const login = async (req, res) => {
             {expiresIn: '7d'}
         );
 
+        console.log('token ', token);
+        console.log('hasCompletedOnbaording ', user.hasCompletedOnboarding);
+        user.hasCompletedOnboarding = true;
+        
+
         return res.json({
             msg: 'Login successful',
             token,
@@ -60,7 +65,8 @@ export const login = async (req, res) => {
                 id: user._id,
                 email: user.email,
                 phone: user.phone,
-                name: user.name
+                name: user.name,
+                hasCompletedOnboarding: true
             }
         })
 

@@ -3,26 +3,96 @@ import {GoogleGenAI} from '@google/genai';
 import Transaction from "../models/Transaction.js";
 import AdvisorChat from '../models/AdvisorChat.js'
 
-export const createAccount = async(req, res) => {
-    try {
-        const {accountName, accountType, startingBalance, monthlySavingGoal,isDefault} = req.body;
-        const userId = req._id;
+// export const createAccount = async(req, res) => {
+//     try {
+//         const {accountName, accountType, startingBalance, monthlySavingGoal,isDefault} = req.body;
+//         const userId = req._id;
 
-        const account = await Account.create({
-            userId,
-            accountName, 
-            accountType, 
-            currentBalance: startingBalance, 
-            monthlySavingGoal,
-            isDefault
-        });
+//         const account = await Account.create({
+//             userId,
+//             accountName, 
+//             accountType, 
+//             currentBalance: startingBalance, 
+//             monthlySavingGoal,
+//             isDefault,
+//         });
 
-        res.status(201).json(account);
+//         console.log(req.body);
+        
 
-    } catch (error) {
-        res.status(500).json({msg: "Internal server error"});
+//             // 🔥 Opening balance created ONCE
+//     if (startingBalance > 0) {
+//       await Transaction.create({
+//         userId: req._id,
+//         accountId: account._id,
+//         title: "Opening Balance",
+//         category: "Initial",
+//         type: "income",
+//         amount: Number(startingBalance),
+//         date: new Date()
+//       });
+//     }
+
+//     console.log('Account ',account);
+    
+
+//         res.status(201).json(account);
+
+//     } catch (error) {
+//         res.status(500).json({msg: "Internal server error"});
+//     }
+// }
+
+export const createAccount = async (req, res) => {
+  try {
+    const {
+      accountName,
+      accountType,
+      startingBalance = 0,
+      monthlySavingGoal = 0,
+      isDefault = false
+    } = req.body;
+
+    const userId = req._id;
+
+    const numericStartingBalance = Number(startingBalance);
+
+    if (isNaN(numericStartingBalance)) {
+      return res.status(400).json({ msg: "Invalid starting balance" });
     }
-}
+
+    // 1️⃣ Create account
+    const account = await Account.create({
+      userId,
+      accountName,
+      accountType,
+      currentBalance: numericStartingBalance,
+      monthlySavingGoal: Number(monthlySavingGoal),
+      isDefault
+    });
+
+    // 2️⃣ Create opening transaction ONCE
+    if (numericStartingBalance > 0) {
+      await Transaction.create({
+        userId,
+        accountId: account._id,
+        title: "Opening Balance",
+        category: "Initial",
+        type: "income",
+        amount: numericStartingBalance,
+        date: new Date()
+      });
+    }
+
+    // 3️⃣ Return created account
+    res.status(201).json(account);
+
+  } catch (error) {
+    console.error("CREATE ACCOUNT ERROR:", error);
+    res.status(500).json({ msg: "Internal server error" });
+  }
+};
+
 
 export const getAccounts = async(req, res) => {
     try {
@@ -46,6 +116,7 @@ export const getAccount = async(req, res) => {
     if (!account) {
       return res.status(404).json({ msg: "Account not found" });
     }
+
     res.status(201).json(account);
 
   } catch (error) {
@@ -68,9 +139,18 @@ export const updateAccount = async(req, res) => {
 export const deletedAccount = async(req, res) => {
     try {
         const {id} = req.params;
+        const userId = req._id;
+
+        const account = await Account.findOne({_id: id, userId});
+        if(!account)
+          return res.status(404).json({msg: "Account not found"});
+
+        // Delete all transactions
+        await Transaction.deleteMany({accountId: id, userId});
+
         await Account.findByIdAndDelete(id);
 
-         res.json({ msg: "Account deleted" });
+         res.json({ msg: "Account deleted also all its transactions" });
     } catch (error) {
         res.status(500).json({msg: "Internal server error"});
     }

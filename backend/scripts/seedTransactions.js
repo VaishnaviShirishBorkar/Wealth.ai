@@ -1,16 +1,15 @@
+import "../env.js";          // 👈 MUST BE FIRST
 import mongoose from "mongoose";
-import dotenv from "dotenv";
 import Transaction from "../models/Transaction.js";
 import Account from "../models/Account.js";
 
-dotenv.config();
 await mongoose.connect(process.env.MONGO_URI);
-
+console.log("MONGO_URI =", process.env.MONGO_URI);
 /* ======================================
    CONFIG
 ====================================== */
 const USER_ID = "69450cb50515e9a269413b85";
-const ACCOUNT_ID = "69450d0d0515e9a269413b8b";
+const ACCOUNT_ID = "6969e0f2c42d89cc705090bb";
 
 /* ======================================
    HELPERS
