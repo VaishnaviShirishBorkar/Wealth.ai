@@ -1,11 +1,4 @@
-Below is a **clean, corrected, and production-ready README** version of your content.
-It is **properly formatted**, **copy-paste safe**, and uses **clear code blocks** exactly like GitHub / Overleaf / recruiters expect.
 
-You can copy **everything as-is** 👇
-
----
-
-```md
 # 💰 Wealth.ai — Personal Finance Management System
 
 Wealth.ai is a **full-stack personal finance & expense management web application** that helps users track accounts, manage transactions, monitor monthly budgets, and receive automated email alerts when spending exceeds predefined limits.
